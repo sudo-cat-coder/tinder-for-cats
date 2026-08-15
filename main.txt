@@ -1,0 +1,27 @@
+User 
+----------------------------------------
+
+user/api/v1/login   POST  
+user/api/v1/signup  POST
+user/api/v1/forgetpass   POST
+user/api/v1/profile/<str:sex>/<int:id>  GET POST PUT DELETE
+
+----------------------------------------
+
+Chat
+
+---------------------------------------
+
+chat/<int:id>   DELETE POST GET
+
+----------------------------------------
+
+Post 
+
+--------------
+
+post/ GET POST
+post/<int:id> DELETE GET(to get a specific person posts)  PUT
+
+
+the main section is matching the api of it is the user/api/v1/profile...... if the user is male the female profile suggest and this revers
