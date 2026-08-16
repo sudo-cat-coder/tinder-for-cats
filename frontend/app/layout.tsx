@@ -20,6 +20,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <Info></Info>
+    <html>
+      <body>
+      <Info></Info>
+        
+      </body>
+
+    </html>
   );
 }
