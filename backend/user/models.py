@@ -37,5 +37,6 @@ class Profile(models.Model):
     username = models.CharField(max_length=255 , unique=True)
     bio = models.TextField(blank=True)
     gender = models.CharField(choices=GENDER , default=NONE)
+    
 
 

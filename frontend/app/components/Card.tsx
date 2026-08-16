@@ -23,7 +23,7 @@ export default function Card(){
 
     return <>
     
-        {data.map( (res) => <h1 key={res.id}> {res.id} : {res.email}</h1> )}
+        {data.map( (res) => <h1 key={res.id || res.email}> {res.id} : {res.email}</h1> )}
 
     
         </>
