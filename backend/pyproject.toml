@@ -1,0 +1,23 @@
+[project]
+name = "tinder-for-cats"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "cat", email = "hesam123409@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.1",
+    "django-cors-headers>=4.9.0",
+    "djangorestframework>=3.18.0",
+    "pillow>=12.3.0",
+    "psycopg2-binary>=2.9.12",
+]
+
+[project.scripts]
+backend = "backend:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
