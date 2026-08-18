@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .manager import CustomUserManager
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class User(AbstractUser):
@@ -54,6 +56,11 @@ class Profile(models.Model):
     username = models.CharField(max_length=255 , unique=True)
     bio = models.TextField(blank=True)
     gender = models.CharField(choices=GENDER , default=NONE)
-    
 
+    def __str__(self):
+        return str(self.user_id.pk)
 
+@receiver(post_save, sender=User)
+def create_profile(sender, created, instance, **kwargs):
+    if created:
+        Profile.objects.get_or_create(user_id=instance)
