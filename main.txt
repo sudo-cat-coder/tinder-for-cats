@@ -25,3 +25,8 @@ post/<int:id> DELETE GET(to get a specific person posts)  PUT
 
 
 the main section is matching the api of it is the user/api/v1/profile...... if the user is male the female profile suggest and this revers
+
+
+
+user = request.user
+likes_received = user.profile.likes.filter(is_like=True).count()

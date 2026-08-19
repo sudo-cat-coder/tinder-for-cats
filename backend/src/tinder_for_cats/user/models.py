@@ -1,8 +1,12 @@
+from enum import unique
+from operator import truediv
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import OneToOneField
 from django.utils.translation import gettext_lazy as _
 from .manager import CustomUserManager
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save , post_delete
 from django.dispatch import receiver
 
 # Create your models here.
@@ -41,7 +45,6 @@ class Profile(models.Model):
 
     FEMALE = 'FEMALE'
     MALE = 'MALE'
-    CUSTOM = 'CUSTOM'
     NONE = 'NONE'
 
     GENDER = [
@@ -50,17 +53,43 @@ class Profile(models.Model):
     (NONE, "Prefer not to say"),
     ]
 
-    user_id = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatar/' )
     name = models.CharField(max_length=255)
     username = models.CharField(max_length=255 , unique=True)
     bio = models.TextField(blank=True)
     gender = models.CharField(choices=GENDER , default=NONE)
+    age = models.PositiveIntegerField()
+
 
     def __str__(self):
         return str(self.user_id.pk)
+
+
+
+class UserPreference(models.Model):
+    profile = OneToOneField(Profile)
+    # fav_color = models.CharField(max_length=255)
+    hobits = models.JSONField(default=dict)
+    job = models.CharField(blank=True)
+    city = models.CharField(blank=True)
+    country = models.CharField(blank=True)
+
+class Likes(models.Model):
+    from_profile = models.ForeignKey(Profile)
+    to_profile = models.ForeignKey(Profile)
+    like = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('from_profile' , 'to_profile')
+
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, created, instance, **kwargs):
     if created:
         Profile.objects.get_or_create(user_id=instance)
+
+# @receiver(post_delete, sender=User)
+# def delete_profile(sender , instance , **kwargs):
+#     Profile.objects.get(instance).delete()
