@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'tinder_for_cats.user',
     'rest_framework',
     # 'tinder_for_cats.user.api.v1',
-    'corsheaders'
+    'corsheaders',
+    'django_extensions',
+    # 'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +113,18 @@ DATABASES = {
         'PORT': '5432',              
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE':"django.db.backends.sqlite3",
+#         }
+# }
+
+
+
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
