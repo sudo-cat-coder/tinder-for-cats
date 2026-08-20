@@ -18,18 +18,9 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import axios from "axios";
+import { useState } from "react";
 
 
-
-const sendData = async function(event:any){
-  event.preventDefault();
-  const form = new FormData(event.target)
-  const formData = Object.fromEntries(form.entries())
-  console.log(formData)
-
-  const post = await axios.post('http://127.0.0.1:8000/user/api/v1/signup' , formData)
-  console.log(post.data)
-}
 
 export function SignupForm({
   className,
@@ -38,6 +29,18 @@ export function SignupForm({
 
 
 React.ComponentProps<"div">) {
+  
+  
+  const sendData = async function(event:any){
+    event.preventDefault();
+    const form = new FormData(event.target)
+    const formData = Object.fromEntries(form.entries())
+    
+    const post = await axios.post('http://127.0.0.1:8000/user/api/v1/signup' , formData)
+    
+  }
+  
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -48,7 +51,7 @@ React.ComponentProps<"div">) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={sendData} >
+          <form action='post' onSubmit={sendData} >
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -91,6 +94,7 @@ React.ComponentProps<"div">) {
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
+      
     </div>
   )
 }

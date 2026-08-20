@@ -6,7 +6,7 @@ from rest_framework.authentication import SessionAuthentication
 from ...models import User
 from rest_framework import permissions, viewsets
 from .serializer import UserSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated 
 from rest_framework.views import APIView, Response
 
 from tinder_for_cats.user.api.v1 import serializer
@@ -21,8 +21,8 @@ from tinder_for_cats.user.api.v1 import serializer
     
 class UserAPiView(APIView):
 
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self,request,id=None):
         if id is not None:
@@ -48,6 +48,7 @@ class UserAPiView(APIView):
 
 class userSignUp(APIView):
     # queryset = User.objects.all()
+    # permission_classes =[IsAuthenticated]
     
     def post(self,request):
         serializer = UserSerializer(data=request.data)
