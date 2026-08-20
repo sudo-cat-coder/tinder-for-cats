@@ -18,4 +18,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('', UserAPiView.as_view(), name='user-list'),
     path('<int:id>/', UserAPiView.as_view(), name='user-detail'),
+
+    #sign in
+    path('signup' , view=userSignUp.as_view())
 ]

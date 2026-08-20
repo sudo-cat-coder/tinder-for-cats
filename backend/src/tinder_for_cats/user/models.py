@@ -2,7 +2,7 @@ from enum import unique
 from operator import truediv
 
 from django.db import models
-from django.contrib.auth.models import AbstractUser,AbstractBaseUser
+from django.contrib.auth.models import AbstractUser,AbstractBaseUser ,PermissionsMixin
 from django.db.models import OneToOneField
 from django.utils.translation import gettext_lazy as _
 from .manager import CustomUserManager
@@ -24,17 +24,18 @@ from datetime import datetime
 #     def __str__(self):
 #         return self.email
 
-class User (AbstractBaseUser):
-    id = models.BigIntegerField(primary_key=True,auto_created=True)
+class User (AbstractBaseUser , PermissionsMixin):
+    id = models.BigAutoField(primary_key=True)
     email = models.EmailField(_('email address'),unique=True)
     # username = models.CharField(max_length=255 , unique=True)
     password = models.CharField(max_length=255 , verbose_name='password')
-    is_superuser = models.BooleanField(default=False)
     data_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
@@ -55,9 +56,9 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatar/' )
-    name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255 , unique=True)
+    avatar = models.ImageField(upload_to='avatar/' ,blank=True,null=True)
+    name = models.CharField(max_length=255 , null=True , blank=True )
+    username = models.CharField( null=True , blank=True ,max_length=255 , unique=True)
     bio = models.TextField(blank=True)
     gender = models.CharField(choices=GENDER , default=NONE)
     age = models.PositiveIntegerField(default=1)
@@ -65,7 +66,7 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return str(self.user.pk)
+        return str(self.user)
 
     def add_like(self):
         self.likes += 1

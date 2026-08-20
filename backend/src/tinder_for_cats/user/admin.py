@@ -3,7 +3,7 @@ from .models import *
 # Register your models here.
 
 class ProfileAdmin(admin.ModelAdmin):
-    fields = [ 'user_id' , 'name' , 'gender']
+    fields = [ 'user' , 'name' , 'gender']
 
 
 class UserAdmin(admin.ModelAdmin):

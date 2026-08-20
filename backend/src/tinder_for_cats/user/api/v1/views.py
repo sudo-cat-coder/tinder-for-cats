@@ -1,4 +1,7 @@
-from rest_framework.status import HTTP_201_CREATED
+import re
+
+from django.http import HttpResponse
+from rest_framework.status import *
 from rest_framework.authentication import SessionAuthentication
 from ...models import User
 from rest_framework import permissions, viewsets
@@ -29,8 +32,7 @@ class UserAPiView(APIView):
             return Response(serializer.data)
         user = User.objects.all()
         serializer = UserSerializer(user,many=True)
-        print(request.user)
-        print(request.auth)
+        # print(request.parsers[1])
         return Response(serializer.data)
 
 
@@ -41,3 +43,30 @@ class UserAPiView(APIView):
 #         if serializer.password1 == serializer.password2 and serializer.is_valid():
 #             serializer.save()
 #             return Response(HTTP_201_CREATED)
+
+
+
+class userSignUp(APIView):
+    # queryset = User.objects.all()
+    
+    def post(self,request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            
+            return Response({
+                'message': 'User created successfully',
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                }
+            }, status=HTTP_201_CREATED)
+        
+        return Response('not okey')
+    
+    def get(self,request):
+        return HttpResponse('hello')
+
+
+
+    
