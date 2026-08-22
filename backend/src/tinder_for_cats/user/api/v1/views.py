@@ -85,14 +85,17 @@ class ProfileUpdate(generics.RetrieveUpdateAPIView):
 class AllProfile(APIView):
     def get(self,request):
         query = Profile.objects.all()
-        serializer = ProfileSerializer(query , many=True)
+        serializer = ProfileSerializer(query , many=True,context={'request' : request})
         return Response(serializer.data)
 
 
 @api_view(['GET'])
 def Add_likes(request,pk):
-    query = Profile.objects.get(pk=pk)
-    serializer = ProfileSerializer(query)
-    query.add_like()
-    query.save()
-    return Response(serializer.data['likes'])
+    if request.method == 'GET':
+        query = Profile.objects.get(pk=pk)
+        serializer = ProfileSerializer(query)
+        query.add_like()
+        query.save()
+        return Response(serializer.data['likes'])
+    if request.method == 'POST':
+        ...

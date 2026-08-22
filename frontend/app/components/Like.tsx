@@ -10,6 +10,16 @@ export default function Likes(){
 
     const [likes, setLikes] = useState(0)
     const [liked , setLiked] = useState(false)
+    const [image,setImage] = useState()
+
+    useEffect(()=>{
+        const like = axios.get('http://localhost:8000/user/api/v1/profile/1').then(res => setLikes(res.data.likes))
+        const avatar = axios.get('http://localhost:8000/user/api/v1/profile/1').then(res => setImage(res.data.avatar))
+        
+    },[])
+
+
+
     const like = async function(){
         const likeCount = await axios.get('http://localhost:8000/user/api/v1/profile/1/likes')
         setLikes(likeCount.data)
@@ -20,6 +30,7 @@ export default function Likes(){
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <img src={image} alt="" />
       
       <div className="w-40 h-40 bg-white rounded-2xl shadow-lg flex flex-col items-center justify-center gap-3">
         
