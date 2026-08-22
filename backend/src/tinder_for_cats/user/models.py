@@ -71,6 +71,8 @@ class Profile(models.Model):
     def add_like(self):
         self.likes += 1
 
+    def reduce_like(self):
+        self.likes -= 1
 
 
 class UserPreference(models.Model):

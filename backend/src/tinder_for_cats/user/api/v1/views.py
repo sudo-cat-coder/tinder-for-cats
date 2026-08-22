@@ -1,15 +1,17 @@
-import re
 
 from django.http import HttpResponse
+from rest_framework.decorators import api_view
 from rest_framework.status import *
 from rest_framework.authentication import SessionAuthentication
-from ...models import User
+from ...models import User,Profile
 from rest_framework import permissions, viewsets
-from .serializer import UserSerializer
+from .serializer import UserSerializer , ProfileSerializer
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework.views import APIView, Response
-
+from rest_framework.mixins import RetrieveModelMixin
 from tinder_for_cats.user.api.v1 import serializer
+from rest_framework import generics
+from django.shortcuts import get_object_or_404
 
 
 
@@ -70,4 +72,27 @@ class userSignUp(APIView):
 
 
 
-    
+class ProfileUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'pk'
+
+    def list(self, pk ,request, *args, **kwargs):
+        queryset = Profile.objects.get(pk=pk)
+        serializer = self.serializer_class(queryset,context={'request':request},many=True)
+        return Response(serializer.data)
+
+class AllProfile(APIView):
+    def get(self,request):
+        query = Profile.objects.all()
+        serializer = ProfileSerializer(query , many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def Add_likes(request,pk):
+    query = Profile.objects.get(pk=pk)
+    serializer = ProfileSerializer(query)
+    query.add_like()
+    query.save()
+    return Response(serializer.data['likes'])

@@ -1,3 +1,5 @@
+from profile import Profile
+
 from rest_framework import routers
 from django.urls import include , path
 from .views import *
@@ -20,5 +22,11 @@ urlpatterns = [
     path('<int:id>/', UserAPiView.as_view(), name='user-detail'),
 
     #sign in
-    path('signup' , view=userSignUp.as_view())
+    path('signup' , view=userSignUp.as_view()),
+
+    #profile update
+    path('profile/<int:pk>' , ProfileUpdate.as_view()),
+    path('profile/<int:pk>/likes' , Add_likes),
+    path('profile/' , AllProfile.as_view()),
+
 ]

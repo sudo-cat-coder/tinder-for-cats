@@ -1,3 +1,6 @@
+from dataclasses import field
+from email.policy import default
+
 from ...models import *
 from rest_framework import serializers
 
@@ -6,6 +9,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
 
     password1 = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
@@ -34,3 +38,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     
 
+class ProfileSerializer(serializers.ModelSerializer):
+
+    likes = serializers.BigIntegerField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ['user' ,'avatar' , 'name' , 'username' , 'bio' ,'gender' , 'age' , 'likes']
+
+        def validate(self,data):
+            ...
+
+        def update(self,validated_data):
+            ...
